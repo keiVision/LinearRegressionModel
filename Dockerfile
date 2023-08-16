@@ -7,9 +7,9 @@ RUN pip install -r requirements.txt
 
 COPY engine /app/engine
 COPY data /app/data
-COPY app.py /app
+COPY engine/app.py /app
 
-ENV FLASK_APP=app.py
+ENV FLASK_APP=engine/app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5000
 
