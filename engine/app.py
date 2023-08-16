@@ -10,39 +10,45 @@ from flask_cors import CORS
 
 import pandas as pd
 
-app = Flask(__name__)
-CORS(app, resources = {r"/*" : {"origins": "*"}})
+def create_app():
+    app = Flask(__name__)
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
-@app.after_request
-def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type, Access-Control-Allow-Headers'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    return response
+    @app.after_request
+    def add_cors_headers(response):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type, Access-Control-Allow-Headers'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+        return response
 
-def add_header(response):
-    response.headers['Cache-Control'] = 'no-store'
-    return response
+    def add_header(response):
+        response.headers['Cache-Control'] = 'no-store'
+        return response
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.get_json()
-    input_data = pd.DataFrame(data = [data], columns = ['Object_area', 'Process_name'])
+    @app.route('/predict', methods=['POST'])
+    def predict():
+        data = request.get_json()
+        input_data = pd.DataFrame(data=[data], columns=['Object_area', 'Process_name'])
 
-    #Train model
-    engine = Engine()
-    engine.train_model()
-    engine.check_train_status()
+        # Train model
+        engine = Engine()
+        engine.train_model()
+        engine.check_train_status()
 
-    predicted_value = engine.predict_hum_days(input_data)
+        predicted_value = engine.predict_hum_days(input_data)
 
-    result = {'Прогноз модели: ': int(predicted_value[0])}
+        result = {'Прогноз модели: ': int(predicted_value[0])}
 
-    return jsonify(result)
+        return jsonify(result)
 
-@app.route('/', methods=['GET'])
-def https_redirect():
-    return redirect("https://194-58-98-29.cloudvps.regruhosting.ru:5000/predict")
+    @app.route('/', methods=['GET'])
+    def https_redirect():
+        return redirect("https://194-58-98-29.cloudvps.regruhosting.ru:5000/predict")
+
+    return app
+
+
+app = create_app()
 
 if __name__ == '__main__':
-    app.run(host = '194.58.98.29', port = 5000)
+    app.run(host='0.0.0.0', port=5000)
