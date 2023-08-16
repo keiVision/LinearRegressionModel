@@ -1,6 +1,6 @@
 class DATA_FILE_PATH:
-    file_path = '/home/kei/Desktop/Projects/Portfolio/LinearRegression/PMiC_Ai/data/data.csv'
-
+    #file_path = '/home/kei/Desktop/Projects/Portfolio/LinearRegression/PMiC_Ai/data/data.csv'
+    file_path = 'data/data.csv'
 
     @staticmethod
     def test_path(path):
