@@ -12,8 +12,10 @@ class DataProcessor:
     def create_df(self) -> pd.DataFrame:
         df = pd.read_csv(self.path)
 
-        if 'Unnamed: 0' in df.columns:
+        if 'Unnamed: 0' and 'Unnamed: 0.1' in df.columns:
             df = df.drop(columns=['Unnamed: 0', 'Unnamed: 0.1'])
+        elif 'Unnamed: 0' in df.columns:
+            df = df.drop(columns = 'Unnamed: 0')
 
         if 'Название процесса' in df.columns:
             df = df.rename(columns={'Название процесса': 'Process_name'})
@@ -28,21 +30,9 @@ class DataProcessor:
             print('Значения в данных были изменены на числовые. Датафрейм создан успешно.')
             return df
         except:
-            print('Датафрейм создан без изменения значений. Возможны конфликты.')
             df = self.encode_process_names(df, 'Process_name')
+            print('Датафрейм создан без изменения значений. Возможны конфликты.')
             return df
-        
-    @staticmethod
-    def split_data(df, target_columns: list, test_size = 0.2, random_state = 42):
-        from sklearn.model_selection import train_test_split
-
-        X = df.drop(columns = target_columns)
-
-        y = df[target_columns]
-
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = random_state)
-
-        return X_train, X_test, y_train, y_test
     
     @staticmethod
     def encode_process_names(df, process_col):
@@ -62,13 +52,15 @@ class DataProcessor:
     def create_basic_encoder():
         default_df = pd.read_csv(DATA_FILE_PATH.file_path)
 
-        try:
-            default_df = default_df.drop(columns = ['Unnamed: 0', 'Unnamed: 0'])
+        if 'Название процесса' in default_df.columns:
             default_df = default_df.rename(columns = {'Название процесса': 'Process_name'})
 
+        try:
+            default_df = default_df.drop(columns = ['Unnamed: 0', 'Unnamed: 0.1'])
+    
         except:
             default_df = default_df.drop(columns = ['Unnamed: 0'])
-
+        
         encoder = OneHotEncoder()
         X = default_df[['Object_area', 'Process_name']]
         encoder.fit_transform(X[['Process_name']]) 
@@ -81,6 +73,3 @@ class DataProcessor:
 # data = DataProcessor()
 # df = data.create_df()
 # print(df)
-# X_train, X_test, y_train, y_test = DataProcessor.split_data(df, ['Process_volume', 'Hum_days', 'Final_price'], 0.2, 42)
-# print(X_train, X_test, y_train, y_test)
-# print(X_test)

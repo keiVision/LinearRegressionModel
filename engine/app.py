@@ -14,6 +14,11 @@ def create_app():
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}})
 
+    # Train model once at app initialization
+    engine = Engine()
+    engine.train_model()
+    engine.check_train_status()
+
     @app.after_request
     def add_cors_headers(response):
         response.headers['Access-Control-Allow-Origin'] = '*'
@@ -30,14 +35,9 @@ def create_app():
         data = request.get_json()
         input_data = pd.DataFrame(data=[data], columns=['Object_area', 'Process_name'])
 
-        # Train model
-        engine = Engine()
-        engine.train_model()
-        engine.check_train_status()
+        predicted_days, predicted_volume = engine.predict(input_data)
 
-        predicted_value = engine.predict_hum_days(input_data)
-
-        result = {'Прогноз модели: ': int(predicted_value[0])}
+        result = {predicted_days, predicted_volume}
 
         return jsonify(result)
 
@@ -51,4 +51,4 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug = True)
