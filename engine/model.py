@@ -33,6 +33,4 @@ class Model:
 
             mae_volume = mean_absolute_error(y_fact_volume, y_pred_volume)
             r2_volume = r2_score(y_fact_volume, y_pred_volume)
-            return mae_days, r2_days, mae_volume, r2_volume
-    
-    # TODO: ПРОВЕРИТЬ МОДЕЛЬ. 
+            return mae_days, r2_days, mae_volume, r2_volume 
