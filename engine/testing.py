@@ -11,22 +11,46 @@ data_processor_instance = DataProcessor()
 df = data_processor_instance.create_df()
 # print(df)
 X = df.drop(columns = ['Final_price','Hum_days', 'Process_volume', 'Стоимость ч/ч с налогами'])
-y_days = df[['Hum_days']]
-y_volume = df[['Process_volume']]
-    
+y_days = df[['Hum_days']].values.ravel()
+y_volume = df[['Process_volume']].values.ravel()
+
 X_train, X_test, y_train_days, y_test_days, y_train_volume, y_test_volume = train_test_split(X, 
                                                                                             y_days,
                                                                                             y_volume,
                                                                                             test_size = 0.2,
-                                                                                            random_state = 0)
-
+                                                                                            random_state = 93) #93
 model_instance.fit_model(X_train, y_train_days, y_train_volume)
 
+
+
+
+# TESTING WITH X_TEST
 predicted_value_days = model_instance.predict_days(X_test)
 predicted_value_volume = model_instance.predict_volume(X_test)
-#print(predicted_value)
-
 mae_days, r2_days , mae_volume, r2_volume = model_instance.evaluate(y_test_days, predicted_value_days, 
                                             y_test_volume, predicted_value_volume)
 print(f'\nDAYS: MAE: {mae_days}\nR2: {r2_days}\n\nVOLUME: MAE: {mae_volume}\nR2: {r2_volume}')
-#DAYS: [MAE: 336.7087139661466, R2: 0.9626020023972922], VOLUME: [MAE: 5047.060998058295, R2: 0.9253059617810911]   
+#DAYS: [MAE: 179.69021343851688, R2: 0.9797166960709668], VOLUME: [MAE: 1012.5355645458415, R2: 0.9917991822527271]   
+
+
+
+
+# TESTING INPUT: Формат передачи входных данных: json [{'col_name': 'col_value', ...}]
+engine = Engine()
+
+X = [{'Object_area': 1420, 'Process_name':'монтаж кабеля ЭОМ на потолке', 'Directive_perfomance': 5}]
+
+days, volume = engine.predict(X)
+print(f"\nПрогноз модели... \nЗатраты для времени: {int(days)} человеко-дней.\nЗатраты для объема процесса: {int(volume)} е.м.")
+
+process_name, object_area, hum_hour_cost, hum_count, hum_days, final_price, process_volume = engine.calculate_result(X)
+
+print(f''' 
+Название процесса: {process_name}
+Площадь объекта: {object_area} метров квадратных.
+Стоимость человеко-часа с учетом налога: {hum_hour_cost} рублей.
+Количество человек для выполнения работы: {int(hum_count)} человек.
+Количество дней на выполнение работы: {int(hum_days)} дней.
+Финальная стоимость работы: {int(final_price)} рублей.
+Объем потраченных материалов: {int(process_volume)} единиц материала.
+''')

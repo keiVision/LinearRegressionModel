@@ -17,7 +17,7 @@ class Engine:
         encoded_df.columns = encoded_df.columns.astype(str)
 
         X = pd.concat([encoded_df, df['Object_area']], axis = 1)
-
+        
         if self.trained_model is not None:
             days_predict = self.trained_model.predict_days(X)
             volume_predict = self.trained_model.predict_volume(X)
@@ -27,11 +27,3 @@ class Engine:
         else:
             print("Модель еще не обучена.")
             return None
-
-# TESTING: Формат передачи входных данных: json [{'col_name': 'col_value', ...}]
-
-# engine = Engine()
-# X_input = [{'Object_area': 10000, 'Process_name': 'Лобики ГКЛ'}]
-# days, volume = engine.predict(X_input)
-# print(f"Прогноз модели... \nЗатраты для времени: {int(days)} человеко-дней.\nЗатраты для объема процесса: {int(volume)} е.м.")
-

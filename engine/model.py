@@ -1,4 +1,5 @@
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
 import pandas as pd
 
@@ -10,8 +11,8 @@ class Model:
         self.model_volume = None
 
     def create_model(self):
-        self.model_days = LinearRegression()
-        self.model_volume = LinearRegression()
+        self.model_days = GradientBoostingRegressor()
+        self.model_volume = GradientBoostingRegressor()
 
     def fit_model(self, X_train: pd.DataFrame, y_train_days: pd.DataFrame, y_train_volume: pd.DataFrame):
         self.model_days.fit(X_train, y_train_days)

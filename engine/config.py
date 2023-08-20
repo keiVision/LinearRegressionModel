@@ -1,6 +1,6 @@
 class DATA_FILE_PATH:
-    file_path = '/home/kei/Desktop/Projects/Portfolio/LinearRegression/PMiC_Ai/data/data.csv' #FOR LOCAL
-    #file_path = 'data/data.csv' #FOR SERVER
+    #file_path = '/home/kei/Desktop/Projects/Portfolio/LinearRegression/PMiC_Ai/data/data.csv' #FOR LOCAL
+    file_path = 'data/data.csv' #FOR SERVER
 
     @staticmethod
     def test_path(path):
@@ -8,24 +8,24 @@ class DATA_FILE_PATH:
 
         try:
             pd.read_csv(path)
-            print('Данные успешно загружены...')
+            print('\nДанные успешно загружены...')
 
         except FileNotFoundError:
-            print('Путь до файла данных неверный.')
+            print('\nПуть до файла данных неверный.')
             while True:
-                input_path = input('Введите корректный путь до файла данных: ')
+                input_path = input('\nВведите корректный путь до файла данных: ')
                 if input_path.lower() == 'exit':
-                    print('Остановка программы...')
+                    print('\nОстановка программы...')
                     return False
                 
                 try:
                     pd.read_csv(input_path)
                     DATA_FILE_PATH.file_path = input_path
-                    print('Успешно. Запуск программы...')
+                    print('\nУспешно. Запуск программы...')
                     return False
                 
                 except FileNotFoundError:
-                    print('Неверный путь. Попробуйте еще раз. Для выхода введите "exit"')
+                    print('\nНеверный путь. Попробуйте еще раз. Для выхода введите "exit"')
                     continue
 
 #TESTING:

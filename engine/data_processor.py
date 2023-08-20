@@ -1,7 +1,6 @@
 #PROCESS DATA
 
 import pandas as pd
-import numpy as np
 from config import DATA_FILE_PATH
 from sklearn.preprocessing import OneHotEncoder
 
@@ -27,11 +26,11 @@ class DataProcessor:
                     if isinstance(value, str):
                         df.at[index, col] = value.replace('\xa0', '').replace(' ', '').astype(float)
             df = self.encode_process_names(df, 'Process_name')
-            print('Значения в данных были изменены на числовые. Датафрейм создан успешно.')
+            # print('Значения в данных были изменены на числовые. Датафрейм создан успешно.')
             return df
         except:
             df = self.encode_process_names(df, 'Process_name')
-            print('Датафрейм создан без изменения значений. Возможны конфликты.')
+            # print('Датафрейм создан без изменения значений. Возможны конфликты.')
             return df
     
     @staticmethod
@@ -66,7 +65,15 @@ class DataProcessor:
         encoder.fit_transform(X[['Process_name']]) 
 
         return encoder
-
+    
+    @staticmethod
+    def take_humhours_cost(process_name: str):
+        if process_name == 'Лобики ГКЛ': return 490.56
+        elif process_name == 'Мариофф (основной объем)': return  630.42
+        elif process_name == 'Кабель ЭОМ пол': return 578.16
+        elif process_name == 'Фальшпол (+обеспыливание)': return 516.84
+        elif process_name == 'монтаж кабеля ЭОМ на потолке': return 604.44
+        elif process_name == 'ОВ2 (воздуховоды)': return 648.24
 
 #TESTING:
 

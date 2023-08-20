@@ -16,8 +16,6 @@ def create_app():
 
     # Train model once at app initialization
     engine = Engine()
-    engine.train_model()
-    engine.check_train_status()
 
     @app.after_request
     def add_cors_headers(response):
@@ -33,11 +31,23 @@ def create_app():
     @app.route('/predict', methods=['POST'])
     def predict():
         data = request.get_json()
-        input_data = pd.DataFrame(data=[data], columns=['Object_area', 'Process_name'])
+        input_data = pd.DataFrame([data], columns = ['Object_area', 'Process_name', 'Directive_perfomance'])
+        hum_days, process_volume = engine.predict(input_data)
 
-        predicted_days, predicted_volume = engine.predict(input_data)
 
-        result = {predicted_days, predicted_volume}
+        process_name = input_data['Process_name'].iloc[0]
+        object_area = input_data['Object_area'].iloc[0]
+        hum_hour_cost = DataProcessor.take_humhours_cost(process_name)
+        hum_count = int(hum_days) // int(input_data['Directive_perfomance'].iloc[0])
+        final_price = (hum_days * 10) * hum_hour_cost
+        
+        result = {'Process_name': str(process_name), 
+                  'Object_area': int(object_area), 
+                  'Hum_hours_cost': int(hum_hour_cost),
+                  'Hum_count': int(hum_count),
+                  'Hum_days': int(hum_days),
+                  'Final_price': int(final_price),
+                  'Process_volume': int(process_volume)}
 
         return jsonify(result)
 
@@ -51,4 +61,4 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug = True)
+    app.run(host='0.0.0.0', port = 5000, debug = True)
