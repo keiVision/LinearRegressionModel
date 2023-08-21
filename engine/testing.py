@@ -43,14 +43,18 @@ X = [{'Object_area': 1420, 'Process_name':'монтаж кабеля ЭОМ на
 days, volume = engine.predict(X)
 print(f"\nПрогноз модели... \nЗатраты для времени: {int(days)} человеко-дней.\nЗатраты для объема процесса: {int(volume)} е.м.")
 
-process_name, object_area, hum_hour_cost, hum_count, hum_days, final_price, process_volume = engine.calculate_result(X)
+process_name = X[0]['Process_name']
+object_area = X[0]['Object_area']
+hum_hour_cost = DataProcessor.take_humhours_cost(process_name)
+hum_count = int(days) // int(X[0]['Directive_perfomance'])
+final_price = (days * 10) * hum_hour_cost
 
 print(f''' 
 Название процесса: {process_name}
 Площадь объекта: {object_area} метров квадратных.
 Стоимость человеко-часа с учетом налога: {hum_hour_cost} рублей.
 Количество человек для выполнения работы: {int(hum_count)} человек.
-Количество дней на выполнение работы: {int(hum_days)} дней.
+Количество дней на выполнение работы: {int(days)} дней.
 Финальная стоимость работы: {int(final_price)} рублей.
-Объем потраченных материалов: {int(process_volume)} единиц материала.
+Объем потраченных материалов: {int(volume)} единиц материала.
 ''')
