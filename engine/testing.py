@@ -38,7 +38,7 @@ print(f'\nDAYS: MAE: {mae_days}\nR2: {r2_days}\n\nVOLUME: MAE: {mae_volume}\nR2:
 # TESTING INPUT: Формат передачи входных данных: json [{'col_name': 'col_value', ...}]
 engine = Engine()
 
-X = [{'Object_area': 1420, 'Process_name':'монтаж кабеля ЭОМ на потолке', 'Directive_perfomance': 5}]
+X = [{'Object_area': 18000, 'Process_name':'монтаж кабеля ЭОМ на потолке', 'Directive_perfomance': 5}]
 
 days, volume = engine.predict(X)
 print(f"\nПрогноз модели... \nЗатраты для времени: {int(days)} человеко-дней.\nЗатраты для объема процесса: {int(volume)} е.м.")
