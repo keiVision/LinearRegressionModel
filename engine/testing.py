@@ -38,14 +38,14 @@ print(f'\nDAYS: MAE: {mae_days}\nR2: {r2_days}\n\nVOLUME: MAE: {mae_volume}\nR2:
 # TESTING INPUT: Формат передачи входных данных: json [{'col_name': 'col_value', ...}]
 engine = Engine()
 
-X = [{'Object_area': 18000, 'Process_name':'монтаж кабеля ЭОМ на потолке', 'Directive_perfomance': 5}]
+X = [{'Object_area': 18000, 'Process_name':'монтаж кабеля ЭОМ на потолке', 'Directive_perfomance': 5, 'Hour_cost': 546}]
 
 days, volume = engine.predict(X)
 print(f"\nПрогноз модели... \nЗатраты для времени: {int(days)} человеко-дней.\nЗатраты для объема процесса: {int(volume)} е.м.")
 
 process_name = X[0]['Process_name']
 object_area = X[0]['Object_area']
-hum_hour_cost = DataProcessor.take_humhours_cost(process_name)
+hum_hour_cost = X[0]['Hour_cost']
 hum_count = int(days) // int(X[0]['Directive_perfomance'])
 final_price = (days * 10) * hum_hour_cost
 
