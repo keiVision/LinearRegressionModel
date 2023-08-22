@@ -38,7 +38,7 @@ print(f'\nDAYS: MAE: {mae_days}\nR2: {r2_days}\n\nVOLUME: MAE: {mae_volume}\nR2:
 # TESTING INPUT: Формат передачи входных данных: json [{'col_name': 'col_value', ...}]
 engine = Engine()
 
-X = [{'Object_area': 18000, 'Process_name':'монтаж кабеля ЭОМ на потолке', 'Directive_perfomance': 5, 'Hour_cost': 546}]
+X = [{'Object_area': 18000, 'Process_name':'монтаж кабеля ЭОМ на потолке', 'Directive_perfomance': 5, 'Hour_cost': 546.49}]
 
 days, volume = engine.predict(X)
 print(f"\nПрогноз модели... \nЗатраты для времени: {int(days)} человеко-дней.\nЗатраты для объема процесса: {int(volume)} е.м.")
@@ -46,7 +46,7 @@ print(f"\nПрогноз модели... \nЗатраты для времени:
 process_name = X[0]['Process_name']
 object_area = X[0]['Object_area']
 hum_hour_cost = X[0]['Hour_cost']
-hum_count = int(days) // int(X[0]['Directive_perfomance'])
+hum_count = int(days) // X[0]['Directive_perfomance']
 final_price = (days * 10) * hum_hour_cost
 
 print(f''' 
@@ -58,3 +58,8 @@ print(f'''
 Финальная стоимость работы: {int(final_price)} рублей.
 Объем потраченных материалов: {int(volume)} единиц материала.
 ''')
+
+
+df = pd.DataFrame([[18000, 'EOM', 5, 546.49]], columns = ['Object_area', 'Process_name', 'Directive_perfomance', 'Hour_cost'])
+
+print(int(days * df['Hour_cost'].iloc[0]))
