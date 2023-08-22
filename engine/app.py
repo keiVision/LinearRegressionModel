@@ -40,7 +40,7 @@ def create_app():
         hum_count = int(hum_days) // int(input_data['Directive_perfomance'].iloc[0])
         final_price = int(float((hum_days * 10) * float(input_data['Hour_cost'].iloc[0])))
         hour_cost = input_data['Hour_cost'].iloc[0]
-
+        directive_perfomance = input_data['Directive_perfomance'].iloc[0]
 
         result = {'Process_name': str(process_name), 
                   'Object_area': int(object_area), 
@@ -48,7 +48,8 @@ def create_app():
                   'Hum_count': int(hum_count),
                   'Hum_days': int(hum_days),
                   'Final_price': int(final_price),
-                  'Process_volume': int(process_volume)}
+                  'Process_volume': int(process_volume),
+                  'Directive_perfomance': int(directive_perfomance)}
 
         return jsonify(result)
 
