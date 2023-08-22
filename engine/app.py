@@ -38,8 +38,8 @@ def create_app():
         process_name = input_data['Process_name'].iloc[0]
         object_area = input_data['Object_area'].iloc[0]
         hum_count = int(hum_days) // int(input_data['Directive_perfomance'].iloc[0])
-        final_price = (hum_days * 10) * int(input_data['Hour_cost'])
-        hour_cost = input_data['Hour_cost']
+        final_price = (hum_days * 10) * int(input_data['Hour_cost'].iloc[0])
+        hour_cost = input_data['Hour_cost'].iloc[0]
 
 
         result = {'Process_name': str(process_name), 
