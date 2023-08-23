@@ -14,7 +14,6 @@ def create_app():
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}})
 
-    # Train model once at app initialization
     engine = Engine()
 
     @app.after_request

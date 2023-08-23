@@ -1,5 +1,3 @@
-#PROCESS DATA
-
 import pandas as pd
 from config import DATA_FILE_PATH
 from sklearn.preprocessing import OneHotEncoder
