@@ -34,16 +34,16 @@ def create_app():
         hum_days, process_volume = engine.predict(input_data)
 
 
-        process_name = input_data['Process_name'].iloc[0]
-        object_area = input_data['Object_area'].iloc[0]
+        process_name = str(input_data['Process_name'].iloc[0])
+        object_area = int(input_data['Object_area'].iloc[0])
         hum_count = int(hum_days) // int(input_data['Directive_perfomance'].iloc[0])
         final_price = int(float((hum_days * 10) * float(input_data['Hour_cost'].iloc[0])))
-        hour_cost = input_data['Hour_cost'].iloc[0]
-        directive_perfomance = input_data['Directive_perfomance'].iloc[0]
+        hour_cost = float(input_data['Hour_cost'].iloc[0])
+        directive_perfomance = int(input_data['Directive_perfomance'].iloc[0])
 
         result = {'Process_name': str(process_name), 
                   'Object_area': int(object_area), 
-                  'Hum_hours_cost': (hour_cost),
+                  'Hum_hours_cost': float(hour_cost),
                   'Hum_count': int(hum_count),
                   'Hum_days': int(hum_days),
                   'Final_price': int(final_price),
