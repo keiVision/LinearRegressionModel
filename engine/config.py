@@ -1,5 +1,4 @@
 class DATA_FILE_PATH:
-    #file_path = '/home/kei/Desktop/Projects/Portfolio/LinearRegression/PMiC_Ai/data/data.csv' #FOR LOCAL
     file_path = 'data/data.csv' #FOR SERVER
 
     @staticmethod
